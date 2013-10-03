@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace pogodynkaCsharp
+namespace PogodynkaWP7._1ver1
 {
-    class Date
+    public class Date
     {
         public string epoch { get; set; }
         public string prettyShort { get; set; }

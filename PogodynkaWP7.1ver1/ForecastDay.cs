@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace pogodynkaCsharp
+namespace PogodynkaWP7._1ver1
 {
-    class ForecastDay
+    public class ForecastDay
     {
         public string period { get; set; }
         public string icon { get; set; }

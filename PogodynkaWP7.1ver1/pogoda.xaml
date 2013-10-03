@@ -23,8 +23,8 @@
                 <ScrollViewer x:Name="allStackPanel">
                     <StackPanel>
                         <TextBlock x:Name="cos1" Text="{Binding miasto}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" Margin="12,12,12,12"   FontSize="{StaticResource PhoneFontSizeLarge}"/>
-                        <TextBlock x:Name="textBox1" Text="Pogogfggg ggggggggggg ffrrfogoogogogogoog jdshdjshdj jhdaded" Margin="{StaticResource PhoneMargin}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="{StaticResource PhoneFontSizeNormal}" TextWrapping="Wrap" />
-                        <Image x:Name="ikonka" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{StaticResource PhoneTouchTargetOverhang}" Source="/ApplicationIcon.png" />
+                        <TextBlock x:Name="textBox1" Text="       Proszę czekać, pobieram dane pogodowe" Margin="{StaticResource PhoneMargin}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="{StaticResource PhoneFontSizeNormal}" TextWrapping="Wrap" />
+                        <Image x:Name="ikonka" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Icons/wait.gif" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>

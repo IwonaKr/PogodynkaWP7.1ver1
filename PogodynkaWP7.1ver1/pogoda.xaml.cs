@@ -33,6 +33,7 @@ namespace PogodynkaWP7._1ver1
         string latitude = "";
         string longitude = "";
         string icon="";
+        public static List<ForecastDay> dni2= new List<ForecastDay>();
         public pogoda()
         {
             InitializeComponent();
@@ -52,12 +53,60 @@ namespace PogodynkaWP7._1ver1
         }
         void NewThread()
         {
-            string url = "http://api.wunderground.com/api/c9d15b10ff3ed303/conditions/astronomy/lang:PL/q/Poland/"+miasto+".xml";
+            string url = "http://api.wunderground.com/api/c9d15b10ff3ed303/forecast/conditions/astronomy/lang:PL/q/Poland/"+miasto+".xml";
 
             WebClient wc = new WebClient();
-            wc.DownloadStringCompleted += HttpsCompleted;
+            //wc.DownloadStringCompleted += HttpsCompleted;
+            wc.DownloadStringCompleted +=wc_DownloadStringCompleted; //dodane, bez tej funkcji też działa!!
+
             wc.DownloadStringAsync(new Uri(url));
 
+        }
+
+        void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            Console.WriteLine("Zabawa z XDocument");
+            string weather="";
+            weather = e.Result;
+            XmlReader reader = XmlReader.Create(new StringReader(weather));
+            XDocument doc = XDocument.Load(reader);
+            var txt_forecast = (from d in doc.Descendants()
+                                where (d.Name.LocalName == "txt_forecast")
+                                select d).ToList();
+
+            var forecast = (from d in txt_forecast.Descendants()
+                            where (d.Name.LocalName=="forecastday")
+                            select d).ToList();
+            foreach (var item in forecast)
+            {
+                Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+                Console.WriteLine(item);
+                ForecastDay d = new ForecastDay();
+                d.period = item.Element("period").Value;
+                d.icon=item.Element("icon").Value;
+                d.iconUrl=item.Element("icon_url").Value;
+                d.fcttext=item.Element("fcttext").Value;
+                d.fcttextMetric=item.Element("fcttext_metric").Value;
+                d.title=item.Element("title").Value;
+                d.pop=item.Element("pop").Value;
+                dni2.Add(d);
+            }
+            var dzien = (from d in dni2 where d.period=="0" select d).FirstOrDefault();
+            if (!(dzien==null))
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    this.textBox1.Text = "Period:             " + dzien.period+
+                            "\nIconUri: " + dzien.iconUrl+
+                            "\nPogoda:          " + dzien.fcttext+
+                            "\nfcttextMetric:     " + dzien.fcttextMetric+
+                            "\ntitle:           " + dzien.title;
+                    Uri uri = new Uri("Icons/"+icon+".png", UriKind.Relative);
+                    ImageSource imgSource = new BitmapImage(uri);
+                    this.ikonka.Source = imgSource;
+                });
+            }
         }
 
         private void HttpsCompleted(object sender, DownloadStringCompletedEventArgs e)
@@ -134,7 +183,7 @@ namespace PogodynkaWP7._1ver1
                             break;
                     }
                 }
-                                
+
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                    {
                        this.textBox1.Text = "Miejsce:             " + place+
@@ -147,7 +196,7 @@ namespace PogodynkaWP7._1ver1
                        ImageSource imgSource = new BitmapImage(uri);
                        this.ikonka.Source = imgSource;
                        //this.ikonka.Source = new BitmapImage(new Uri("pack://application:,,,/PogodynkaWP7.1ver1;component/Icons/"+icon"+.png"));
-                       });
+                   });
 
                 //throw new NotImplementedException();
                 /*if (e.Error == null)
