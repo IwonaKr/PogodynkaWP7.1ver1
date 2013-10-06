@@ -77,10 +77,10 @@ namespace PogodynkaWP7._1ver1
             var forecast = (from d in txt_forecast.Descendants()
                             where (d.Name.LocalName=="forecastday")
                             select d).ToList();
+            
             foreach (var item in forecast)
             {
-                Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-
+                
                 Console.WriteLine(item);
                 ForecastDay d = new ForecastDay();
                 d.period = item.Element("period").Value;
@@ -102,7 +102,7 @@ namespace PogodynkaWP7._1ver1
                             "\nPogoda:          " + dzien.fcttext+
                             "\nfcttextMetric:     " + dzien.fcttextMetric+
                             "\ntitle:           " + dzien.title;
-                    Uri uri = new Uri("Icons/"+icon+".png", UriKind.Relative);
+                    Uri uri = new Uri("Icons/"+dzien.icon+".png", UriKind.Relative);
                     ImageSource imgSource = new BitmapImage(uri);
                     this.ikonka.Source = imgSource;
                 });
