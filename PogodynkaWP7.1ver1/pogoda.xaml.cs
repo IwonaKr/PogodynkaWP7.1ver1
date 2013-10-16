@@ -33,7 +33,7 @@ namespace PogodynkaWP7._1ver1
         string latitude = "";
         string longitude = "";
         string icon="";
-        public static List<ForecastDay> dni1= new List<ForecastDay>();
+        //public static List<ForecastDay> dni1= new List<ForecastDay>();
         public static List<ForecastDay> dni2= new List<ForecastDay>(); //txt_forecast
         public static List<ForecastDay> SFDay = new List<ForecastDay>(); //SimpleForecast
 
@@ -71,153 +71,166 @@ namespace PogodynkaWP7._1ver1
         {
             //Console.WriteLine("Zabawa z XDocument");
             string weather="";
-            weather = e.Result;
-            XmlReader reader = XmlReader.Create(new StringReader(weather));
-            XDocument doc = XDocument.Load(reader);
-            var txt_forecast = (from d in doc.Descendants()
-                                where (d.Name.LocalName == "txt_forecast")
-                                select d).ToList();
-
-            var forecast = (from d in txt_forecast.Descendants()
-                            where (d.Name.LocalName=="forecastday")
-                            select d).ToList();
-
-            foreach (var item in forecast)
+            try
             {
+                weather = e.Result;
+                XmlReader reader = XmlReader.Create(new StringReader(weather));
+                XDocument doc = XDocument.Load(reader);
+                var txt_forecast = (from d in doc.Descendants()
+                                    where (d.Name.LocalName == "txt_forecast")
+                                    select d).ToList();
 
-                Console.WriteLine(item);
-                ForecastDay d = new ForecastDay();
-                d.period = item.Element("period").Value;
-                d.icon=item.Element("icon").Value;
-                d.iconUrl=item.Element("icon_url").Value;
-                d.fcttext=item.Element("fcttext").Value;
-                d.fcttextMetric=item.Element("fcttext_metric").Value;
-                d.title=item.Element("title").Value;
-                d.pop=item.Element("pop").Value;
-                dni2.Add(d);
-            }
-            var simpleForecast = (from d in doc.Descendants()
-                                  where (d.Name.LocalName=="simpleforecast")
-                                  select d).ToList();
-
-            var smplFrcstDay = (from d in simpleForecast.Descendants()
+                var forecast = (from d in txt_forecast.Descendants()
                                 where (d.Name.LocalName=="forecastday")
                                 select d).ToList();
-            foreach (var item in smplFrcstDay)
-            {
-                string sTmp="";
-                int iTmp=0;
-                Console.WriteLine("****"+item);
-                ForecastDay fd = new ForecastDay();
 
-                fd.period = item.Element("period").Value;
-                fd.icon=item.Element("icon").Value;
-                fd.iconUrl=item.Element("icon_url").Value;
-                fd.conditions=item.Element("conditions").Value;
-                fd.pop=item.Element("pop").Value;
+                foreach (var item in forecast)
+                {
 
-                //DATA
-                Date d = new Date();
-                var data = (from x in item.Descendants()
-                            where x.Name.LocalName=="date"
-                            select x).FirstOrDefault();
+                    Console.WriteLine(item);
+                    ForecastDay d = new ForecastDay();
+                    d.period = item.Element("period").Value;
+                    d.icon=item.Element("icon").Value;
+                    d.iconUrl=item.Element("icon_url").Value;
+                    d.fcttext=item.Element("fcttext").Value;
+                    d.fcttextMetric=item.Element("fcttext_metric").Value;
+                    d.title=item.Element("title").Value;
+                    d.pop=item.Element("pop").Value;
+                    dni2.Add(d);
+                }
+                var simpleForecast = (from d in doc.Descendants()
+                                      where (d.Name.LocalName=="simpleforecast")
+                                      select d).ToList();
 
-                Console.WriteLine("XXXXXXX: "+data.Element("day").Value);
-                d.day=data.Element("day").Value;
-                d.epoch=data.Element("epoch").Value;
-                d.hour=data.Element("hour").Value;
-                d.min=data.Element("min").Value;
-                d.month=data.Element("month").Value;
-                d.monthName=data.Element("monthname").Value;
-                d.weekDay=data.Element("weekday").Value; //albo weekday_short , czyli skrót nazwy dnia tygodnia
-                d.pretty=data.Element("pretty").Value;
-                d.yday=data.Element("yday").Value;
-                d.year=data.Element("year").Value;
-                d.prettyShort=data.Element("pretty_short").Value;
+                var smplFrcstDay = (from d in simpleForecast.Descendants()
+                                    where (d.Name.LocalName=="forecastday")
+                                    select d).ToList();
+                foreach (var item in smplFrcstDay)
+                {
+                    string sTmp="";
+                    int iTmp=0;
+                    Console.WriteLine("****"+item);
+                    ForecastDay fd = new ForecastDay();
 
-                fd.data=d;
+                    fd.period = item.Element("period").Value;
+                    fd.icon=item.Element("icon").Value;
+                    fd.iconUrl=item.Element("icon_url").Value;
+                    fd.conditions=item.Element("conditions").Value;
+                    fd.pop=item.Element("pop").Value;
+
+                    //DATA
+                    Date d = new Date();
+                    var data = (from x in item.Descendants()
+                                where x.Name.LocalName=="date"
+                                select x).FirstOrDefault();
+
+                    Console.WriteLine("XXXXXXX: "+data.Element("day").Value);
+                    d.day=data.Element("day").Value;
+                    d.epoch=data.Element("epoch").Value;
+                    d.hour=data.Element("hour").Value;
+                    d.min=data.Element("min").Value;
+                    d.month=data.Element("month").Value;
+                    d.monthName=data.Element("monthname").Value;
+                    d.weekDay=data.Element("weekday").Value; //albo weekday_short , czyli skrót nazwy dnia tygodnia
+                    d.pretty=data.Element("pretty").Value;
+                    d.yday=data.Element("yday").Value;
+                    d.year=data.Element("year").Value;
+                    d.prettyShort=data.Element("pretty_short").Value;
+
+                    fd.data=d;
 
 
-                //WIND NIE DZIAŁA, DOKOŃCZYĆ
+                    //WIND NIE DZIAŁA, DOKOŃCZYĆ
 
-                //MAX WIND
-                var wnd = (from x in item.Descendants()
-                           where x.Name.LocalName=="maxwind"
+                    //MAX WIND
+                    var wnd = (from x in item.Descendants()
+                               where x.Name.LocalName=="maxwind"
+                               select x).FirstOrDefault();
+                    sTmp=wnd.Element("mph").Value;
+                    if (int.TryParse(sTmp, out iTmp))
+                        fd.maxwind_mph=iTmp;
+                    sTmp=wnd.Element("kph").Value;
+                    if (int.TryParse(sTmp, out iTmp))
+                        fd.maxwind_kph=iTmp;
+                    fd.maxwind_dir=wnd.Element("dir").Value;
+                    fd.maxwind_degrees=wnd.Element("degrees").Value;
+
+                    //AVERAGE WIND
+                    wnd = (from x in item.Descendants()
+                           where x.Name.LocalName=="avewind"
                            select x).FirstOrDefault();
-                sTmp=wnd.Element("mph").Value;
-                if (int.TryParse(sTmp, out iTmp))
-                    fd.maxwind_mph=iTmp;
-                sTmp=wnd.Element("kph").Value;
-                if (int.TryParse(sTmp, out iTmp))
-                    fd.maxwind_kph=iTmp;
-                fd.maxwind_dir=wnd.Element("dir").Value;
-                fd.maxwind_degrees=wnd.Element("degrees").Value;
+                    sTmp=wnd.Element("mph").Value;
+                    if (int.TryParse(sTmp, out iTmp))
+                        fd.avewind_mph=iTmp;
+                    sTmp=wnd.Element("kph").Value;
+                    if (int.TryParse(sTmp, out iTmp))
+                        fd.avewind_kph=iTmp;
+                    fd.avewind_dir=wnd.Element("dir").Value;
+                    fd.avewind_degrees=wnd.Element("degrees").Value;
 
-                //AVERAGE WIND
-                wnd = (from x in item.Descendants()
-                       where x.Name.LocalName=="avewind"
-                       select x).FirstOrDefault();
-                sTmp=wnd.Element("mph").Value;
-                if (int.TryParse(sTmp, out iTmp))
-                    fd.avewind_mph=iTmp;
-                sTmp=wnd.Element("kph").Value;
-                if (int.TryParse(sTmp, out iTmp))
-                    fd.avewind_kph=iTmp;
-                fd.avewind_dir=wnd.Element("dir").Value;
-                fd.avewind_degrees=wnd.Element("degrees").Value;
+                    Console.WriteLine(sTmp);
+                    // HUMIDITY
+                    sTmp=item.Element("avehumidity").Value;
+                    if (int.TryParse(sTmp, out iTmp))
+                        fd.avehumidity=iTmp;
+                    sTmp=item.Element("maxhumidity").Value;
+                    if (int.TryParse(sTmp, out iTmp))
+                        fd.maxhumidity=iTmp;
+                    sTmp=item.Element("minhumidity").Value;
+                    if (int.TryParse(sTmp, out iTmp))
+                        fd.minhumidity=iTmp;
 
-                Console.WriteLine(sTmp);
-                // HUMIDITY
-                sTmp=item.Element("avehumidity").Value;
-                if (int.TryParse(sTmp, out iTmp))
-                    fd.avehumidity=iTmp;
-                sTmp=item.Element("maxhumidity").Value;
-                if (int.TryParse(sTmp, out iTmp))
-                    fd.maxhumidity=iTmp;
-                sTmp=item.Element("minhumidity").Value;
-                if (int.TryParse(sTmp, out iTmp))
-                    fd.minhumidity=iTmp;
+                    //TEMPERATURE
+                    var temp2 = from m in item.Descendants()
+                                where (m.Name.LocalName=="high")
+                                select m;
+                    var temeperatura = from m in temp2.Descendants()
+                                       where m.Name.LocalName=="celsius"
+                                       select m.Value;
 
-                //TEMPERATURE
-                var temp2 = from m in item.Descendants()
-                            where (m.Name.LocalName=="high")
+                    sTmp = temeperatura.First();
+                    fd.highTempC=sTmp;
+                    temp2 = from m in item.Descendants()
+                            where (m.Name.LocalName=="low")
                             select m;
-                var temeperatura = from m in temp2.Descendants()
+                    temeperatura = from m in temp2.Descendants()
                                    where m.Name.LocalName=="celsius"
                                    select m.Value;
+                    sTmp = temeperatura.First();
+                    fd.lowTempC=sTmp;
+                    SFDay.Add(fd);
+                }
 
-                sTmp = temeperatura.First();
-                fd.highTempC=sTmp;
-                temp2 = from m in item.Descendants()
-                        where (m.Name.LocalName=="low")
-                        select m;
-                temeperatura = from m in temp2.Descendants()
-                               where m.Name.LocalName=="celsius"
-                               select m.Value;
-                sTmp = temeperatura.First();
-                fd.lowTempC=sTmp;
-                SFDay.Add(fd);
+                var dzien = (from d in SFDay where d.period=="1" select d).FirstOrDefault();
+                var dzien2 = (from d in dni2 where d.period=="0" select d).FirstOrDefault();
+                if (!(dzien==null))
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        this.textBox1.Text = "Period:             " + dzien.period+
+                            "\nIconUri: " + dzien.iconUrl+
+                            "\nPogoda:          " + dzien2.fcttext+
+                            "\nfcttextMetric:     " + dzien2.fcttextMetric+
+                            "\ntitle:           " + dzien2.title;
+                        Uri uri = new Uri("Icons/"+dzien.icon+".png", UriKind.Relative);
+                        ImageSource imgSource = new BitmapImage(uri);
+                        this.ikonka.Source = imgSource;
+                        TextBlock tb = new TextBlock();
+                        tb.Text = "Temp: "+dzien.lowTempC+"C-"+dzien.highTempC+"C\nWarunki: "+dzien.conditions+"\nWilgotność (min,max,śr): "+","+dzien.maxhumidity.ToString()+","+dzien.avehumidity.ToString()+"\nWiatr (m/h, km/h,kierunek): "+dzien.maxwind_mph.ToString()+","+dzien.maxwind_kph.ToString()+","+dzien.maxwind_dir;
+
+
+                        this.glownyStackPanel.Children.Add(tb);
+                    });
+                }
             }
-
-            var dzien = (from d in SFDay where d.period=="1" select d).FirstOrDefault();
-            if (!(dzien==null))
+            catch (Exception ex)
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    this.textBox1.Text = "Period:             " + dzien.period+
-                            "\nIconUri: " + dzien.iconUrl+
-                            "\nPogoda:          " + dzien.fcttext+
-                            "\nfcttextMetric:     " + dzien.fcttextMetric+
-                            "\ntitle:           " + dzien.title;
-                    Uri uri = new Uri("Icons/"+dzien.icon+".png", UriKind.Relative);
-                    ImageSource imgSource = new BitmapImage(uri);
-                    this.ikonka.Source = imgSource;
-                    TextBlock tb = new TextBlock();
-                    tb.Text = "Temp: "+dzien.lowTempC+"C-"+dzien.highTempC+"C\nWarunki: "+dzien.conditions+"\nWilgotność (min,max,śr): "+","+dzien.maxhumidity.ToString()+","+dzien.avehumidity.ToString()+"\nWiatr (m/h, km/h,kierunek): "+dzien.maxwind_mph.ToString()+","+dzien.maxwind_kph.ToString()+","+dzien.maxwind_dir;
-
-
-                    this.glownyStackPanel.Children.Add(tb);
-                });
+                       {
+                           MessageBox.Show(ex.Message, "Błąd", MessageBoxButton.OK);
+                           this.textBox1.Text=ex.Message;
+                           this.ikonka.Source=null;
+                       });
             }
         }
 
