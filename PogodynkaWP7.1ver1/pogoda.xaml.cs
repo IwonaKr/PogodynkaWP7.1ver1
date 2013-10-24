@@ -216,9 +216,13 @@ namespace PogodynkaWP7._1ver1
                         ImageSource imgSource = new BitmapImage(uri);
                         this.ikonka.Source = imgSource;
                         TextBlock tb = new TextBlock();
-                        tb.Text = "Temp: "+dzien.lowTempC+"C-"+dzien.highTempC+"C\nWarunki: "+dzien.conditions+"\nWilgotność (min,max,śr): "+","+dzien.maxhumidity.ToString()+","+dzien.avehumidity.ToString()+"\nWiatr (m/h, km/h,kierunek): "+dzien.maxwind_mph.ToString()+","+dzien.maxwind_kph.ToString()+","+dzien.maxwind_dir;
+                        tb.TextWrapping=TextWrapping.Wrap; //zawijanie tekstu
+                        tb.Text = "Temp: "+dzien.lowTempC+"C-"+dzien.highTempC+"C\nWarunki: "+dzien.conditions+"\nWilgotność (min,max,śr): "+dzien.minhumidity+", "+dzien.maxhumidity.ToString()+","+dzien.avehumidity.ToString()+"\nWiatr (mile/h, km/h,kierunek): "+dzien.maxwind_mph.ToString()+","+dzien.maxwind_kph.ToString()+","+dzien.maxwind_dir;
+                        TextBlock oDniu = new TextBlock();
+                        oDniu.TextWrapping=TextWrapping.Wrap;
+                        oDniu.Text="Dzisiaj jest "+dzien.data.day+" "+dzien.data.monthName+" "+dzien.data.year+", "+dzien.data.weekDay+". To "+dzien.data.yday+" dzień roku.";
 
-
+                        this.glownyStackPanel.Children.Add(oDniu);
                         this.glownyStackPanel.Children.Add(tb);
                     });
                 }
