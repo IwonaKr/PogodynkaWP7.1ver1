@@ -19,7 +19,7 @@
         <!--Pivot Control-->
         <controls:Pivot Title="POGODYNKA">
             <!--Pivot item one-->
-            <controls:PivotItem Header="pogoda">
+            <controls:PivotItem Header="pogoda teraz">
                 <ScrollViewer x:Name="scrollViewer">
                     <StackPanel x:Name="glownyStackPanel">
                         <TextBlock x:Name="miastoTB" Text="{Binding miasto}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" Margin="12,12,12,12"   FontSize="{StaticResource PhoneFontSizeLarge}"/>
@@ -27,6 +27,10 @@
                         <Image x:Name="ikonka" Source="/Icons/wait.png" />
                     </StackPanel>
                 </ScrollViewer>
+            </controls:PivotItem>
+            
+            <controls:PivotItem Header="pogoda później">
+                <Grid/>
             </controls:PivotItem>
 
             <!--Pivot item two-->

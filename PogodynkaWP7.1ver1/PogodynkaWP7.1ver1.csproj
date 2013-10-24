@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="Date.cs" />
     <Compile Include="ForecastDay.cs" />
+    <Compile Include="HourlyForecast.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

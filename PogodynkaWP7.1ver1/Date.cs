@@ -19,6 +19,9 @@ namespace PogodynkaWP7._1ver1
         public string yday { get; set; }
         public string hour { get; set; }
         public string min { get; set; }
+        //public string ampm { get; set; }
+        //public string tzShort { get; set; }
+        //public string tzLong { get; set; }
 
 
     }
