@@ -29,8 +29,12 @@
                 </ScrollViewer>
             </controls:PivotItem>
             
-            <controls:PivotItem Header="pogoda później">
-                <Grid/>
+            <controls:PivotItem Header="godzinowa">
+                <ScrollViewer>
+                    <StackPanel x:Name="hStackPanel">
+                        
+                    </StackPanel>
+                </ScrollViewer>
             </controls:PivotItem>
 
             <!--Pivot item two-->

@@ -169,6 +169,29 @@ namespace PogodynkaWP7._1ver1
                                    where d.Name.LocalName=="mslp"
                                    select d).FirstOrDefault()).Element("metric").Value);
                     HourlyForecast.Add(hf);
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("pl-PL");
+                        System.Threading.Thread.CurrentThread.CurrentCulture = ci;
+                        Bloczek b = new Bloczek();
+                        b.godzina.Text=hf.czas.ToString("HH:mm");
+                        b.dzien.Text=hf.czas.ToString("d MMM yyyy");
+                        b.warunki.Text=hf.condition;
+                        b.opady.Text="Opady: "+hf.qpf;
+                        b.temperatura.Text="Temp: "+hf.tempC+"C";
+                        ImageSource imgSrc;
+                        if (hf.czas.Hour<=6 || hf.czas.Hour>=22)
+                        {
+                            imgSrc = new BitmapImage(new Uri("Icons/nt_"+hf.icon+".png", UriKind.Relative));
+                        }
+                        else
+                        {
+                            imgSrc = new BitmapImage(new Uri("Icons/"+hf.icon+".png", UriKind.Relative));
+                        }
+
+                        b.ikonka.Source=imgSrc;
+                        hStackPanel.Children.Add(b);
+                    });
                 }
 
 
