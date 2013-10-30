@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Phone.Controls;
@@ -180,11 +175,7 @@ namespace PogodynkaWP7._1ver1
                         b.opady.Text="Opady: "+hf.qpf;
                         b.temperatura.Text="Temp: "+hf.tempC+"C";
                         ImageSource imgSrc;
-<<<<<<< HEAD
                         if (hf.czas.Hour<=6 || hf.czas.Hour>=22)
-=======
-                        if (hf.czas.Hour<6 || hf.czas.Hour>22)
->>>>>>> 90be94bc8bde691c71073e5fc006c5c3d0051fa3
                         {
                             imgSrc = new BitmapImage(new Uri("Icons/nt_"+hf.icon+".png", UriKind.Relative));
                         }
@@ -206,7 +197,7 @@ namespace PogodynkaWP7._1ver1
                        {
                            MessageBox.Show(ex.Message, "Błąd", MessageBoxButton.OK);
                            this.textBox1.Text=ex.Message;
-                           this.ikonka.Source=null;                           
+                           this.ikonka.Source=null;
                        });
             }
         }
