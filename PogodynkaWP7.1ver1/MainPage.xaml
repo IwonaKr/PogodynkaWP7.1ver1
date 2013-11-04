@@ -32,7 +32,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Miasto}" Width="150" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="{StaticResource PhoneFontSizeLarge}"/>
+                            <TextBlock Text="{Binding Miasto}" Width="Auto" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="{StaticResource PhoneFontSizeLarge}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

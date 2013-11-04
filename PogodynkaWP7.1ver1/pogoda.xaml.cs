@@ -18,6 +18,7 @@ namespace PogodynkaWP7._1ver1
     public partial class pogoda : PhoneApplicationPage
     {
         public static string miasto;
+        public static string mess;
         string place = "";
         string obs_time = "";
         string weather1 = "";
@@ -46,7 +47,19 @@ namespace PogodynkaWP7._1ver1
             string msg;
             if (NavigationContext.QueryString.TryGetValue("msg", out msg))
             {
-                miasto=msg;
+                
+                if (msg.Contains(","))
+                {
+                    mess=msg;
+                    miasto="GPS: "+msg;
+                    Debug.WriteLine("GPS");
+                }
+                else
+                {
+                    miasto=msg;
+                    mess="Poland/"+msg;
+                    Debug.WriteLine("MIASTO");
+                }
                 this.miastoTB.Text=miasto;
                 Thread t = new Thread(NewThread);
                 t.Start();
@@ -57,7 +70,7 @@ namespace PogodynkaWP7._1ver1
         }
         void NewThread()
         {
-            string url = "http://api.wunderground.com/api/c9d15b10ff3ed303/alerts/conditions/forecast/forecast10day/astronomy/hourly/lang:PL/q/Poland/"+miasto+".xml";
+            string url = "http://api.wunderground.com/api/c9d15b10ff3ed303/alerts/conditions/forecast/forecast10day/astronomy/hourly/lang:PL/q/"+mess+".xml";
 
             WebClient wc = new WebClient();
             //wc.DownloadStringCompleted += HttpsCompleted;
